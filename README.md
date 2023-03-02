@@ -70,3 +70,14 @@ pipenv
 ```
 
 You can specify a non-default location of this file by setting a `ASDF_PYTHON_DEFAULT_PACKAGES_FILE` variable.
+
+## Virtualenv support
+
+Automatically create and activate a virtualenv when entering a directory with the
+`virtualenv` option. This requires using `.rtx.toml` since `.tool-versions` could
+not support this syntax:
+
+```toml
+[tools]
+python = {version='3.11', virtualenv='.venv'}
+```
