@@ -71,7 +71,7 @@ pipenv
 
 You can specify a non-default location of this file by setting a `RTX_PYTHON_DEFAULT_PACKAGES_FILE` variable.
 
-## Virtualenv support
+## [experimental] Virtualenv support
 
 Automatically create and activate a virtualenv when entering a directory with the
 `virtualenv` option. This requires using `.rtx.toml` since `.tool-versions` could
