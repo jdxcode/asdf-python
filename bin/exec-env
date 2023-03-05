@@ -9,6 +9,9 @@ setup_virtualenv() {
     return
   fi
   unset PYTHONHOME
+  if [[ "$VIRTUAL_ENV" != /* ]] && [[ -n "${RTX_PROJECT_ROOT:-}" ]]; then
+		VIRTUAL_ENV="${RTX_PROJECT_ROOT:-}/$VIRTUAL_ENV"
+	fi
   if [ ! -d "$VIRTUAL_ENV" ]; then
 		echo "rtx-python: setting up virtualenv at $VIRTUAL_ENV" >&2
 		"$python_bin" -m venv "$VIRTUAL_ENV"
