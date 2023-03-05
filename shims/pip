@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# This script wraps pip to run `asdf reshim` after installs and uninstalls.
+# This script wraps pip to run `rtx reshim` after installs and uninstalls.
 # Any other cases are passed-through to pip.
 #
 # Inspired by the npm shim: https://github.com/asdf-vm/asdf-nodejs/blob/b2d06a768d9a14186db72/shims/npm
@@ -12,7 +12,7 @@ this_dir=$(cd "$this_dir" && pwd -P)  # Normalizes the directory; see https://st
 plugin_name=$(basename "$(dirname "$this_dir")")
 
 should_reshim() {
-  if [ "${ASDF_PYTHON_SKIP_RESHIM:-}" ]; then
+  if [ "${RTX_PYTHON_SKIP_RESHIM:-}" ]; then
     return 1
   fi
 
@@ -28,10 +28,10 @@ should_reshim() {
 }
 
 resolve_pip() {
-  local pip_location="${ASDF_PYTHON_CANON_PIP_PATH:-$(search_pip_bin)}"
+  local pip_location="${RTX_PYTHON_CANON_PIP_PATH:-$(search_pip_bin)}"
 
   if ! [ "$pip_location" ]; then
-    echo "asdf-python couldn't find a suitable pip executable"
+    echo "rtx-python couldn't find a suitable pip executable"
     echo "This is probably a problem with the plugin, please report this issue"
     exit 1
   fi
@@ -40,7 +40,7 @@ resolve_pip() {
 }
 
 search_pip_bin() {
-  local probably_pip="$(asdf where python)/bin/pip"
+  local probably_pip="$(rtx where python)/bin/pip"
 
   if [ -x "$probably_pip" ]; then
     echo "$probably_pip"
@@ -55,8 +55,8 @@ wrap_pip() {
 
   if should_reshim "$@"; then
     "$pip" "$@"
-    echo "Reshimming asdf $plugin_name..."
-    asdf reshim "$plugin_name"
+    echo "Reshimming rtx $plugin_name..."
+    rtx reshim "$plugin_name"
   else
     exec "$pip" "$@"
   fi

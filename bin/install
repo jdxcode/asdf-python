@@ -11,17 +11,17 @@ install_python() {
 
   if [ "$install_type" != "version" ]; then
     echoerr "Cannot install specific ref from source, sorry."
-    echoerr "For a list of available versions, see \`asdf list-all python\`."
+    echoerr "For a list of available versions, see \`rtx ls-remote python\`."
     exit 1
   fi
   install_or_update_python_build
 
-  if [[ -n "${ASDF_PYTHON_PATCH_URL:-}" ]]; then 
+  if [[ -n "${RTX_PYTHON_PATCH_URL:-}" ]]; then 
     echo "python-build --patch $version $install_path"
-    echo "with patch file from: $ASDF_PYTHON_PATCH_URL"
-    $(python_build_path) --patch "$version" "$install_path" < <(curl -sSL "$ASDF_PYTHON_PATCH_URL")
-  elif [[ -n "${ASDF_PYTHON_PATCHES_DIRECTORY:-}" ]] && [[ -f ${ASDF_PYTHON_PATCHES_DIRECTORY}/${version}.patch ]]; then
-    local patch_file=${ASDF_PYTHON_PATCHES_DIRECTORY}/${version}.patch
+    echo "with patch file from: $RTX_PYTHON_PATCH_URL"
+    $(python_build_path) --patch "$version" "$install_path" < <(curl -sSL "$RTX_PYTHON_PATCH_URL")
+  elif [[ -n "${RTX_PYTHON_PATCHES_DIRECTORY:-}" ]] && [[ -f ${RTX_PYTHON_PATCHES_DIRECTORY}/${version}.patch ]]; then
+    local patch_file=${RTX_PYTHON_PATCHES_DIRECTORY}/${version}.patch
     echo "python-build $version $install_path -p < $patch_file"
     $(python_build_path) "$version" "$install_path" -p < $patch_file
   else
@@ -31,14 +31,14 @@ install_python() {
 }
 
 install_default_python_packages() {
-  local packages_file="${ASDF_PYTHON_DEFAULT_PACKAGES_FILE:-$HOME/.default-python-packages}"
+  local packages_file="${RTX_PYTHON_DEFAULT_PACKAGES_FILE:-$HOME/.default-python-packages}"
 
   if [ -f "$packages_file" ]; then
     echo -ne "\nInstalling default python packages..."
-    PATH="$ASDF_INSTALL_PATH/bin:$PATH" pip install -U -r "$packages_file"
+    PATH="$RTX_INSTALL_PATH/bin:$PATH" pip install -U -r "$packages_file"
   fi
 }
 
 ensure_python_build_installed
-install_python "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+install_python "$RTX_INSTALL_TYPE" "$RTX_INSTALL_VERSION" "$RTX_INSTALL_PATH"
 install_default_python_packages

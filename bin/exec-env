@@ -3,7 +3,7 @@
 set -euo pipefail
 
 setup_virtualenv() {
-  local python_bin="$ASDF_INSTALL_PATH/bin/python"
+  local python_bin="$RTX_INSTALL_PATH/bin/python"
   VIRTUAL_ENV="$(eval "echo ${RTX_TOOL_OPTS__VIRTUALENV:-}")"
   if [ "$VIRTUAL_ENV" = "" ]; then
     return
