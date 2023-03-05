@@ -9,11 +9,11 @@ setup_virtualenv() {
     return
   fi
   unset PYTHONHOME
-  RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
-  if [ ! -d "$RTX_ADD_PATH" ]; then
-		echo "rtx-python: setting up virtualenv at $RTX_ADD_PATH" >&2
+  if [ ! -d "$VIRTUAL_ENV" ]; then
+		echo "rtx-python: setting up virtualenv at $VIRTUAL_ENV" >&2
 		"$python_bin" -m venv "$VIRTUAL_ENV"
 	fi
+  RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
   export VIRTUAL_ENV RTX_ADD_PATH
 }
 
