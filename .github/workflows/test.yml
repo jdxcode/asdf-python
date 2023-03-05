@@ -15,5 +15,7 @@ jobs:
       - uses: jdxcode/rtx-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: mkdir -p ~/.local/share/rtx/plugins
+      - run: ln -s $PWD ~/.local/share/rtx/plugins/python
       - run: rtx i python@latest
       - run: rtx x python@latest -- python -V
