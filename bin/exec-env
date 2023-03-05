@@ -4,13 +4,17 @@ set -euo pipefail
 
 setup_virtualenv() {
   local python_bin="$ASDF_INSTALL_PATH/bin/python"
-  VIRTUAL_ENV="${RTX_TOOL_OPT__VIRTUALENV:-}"
+  VIRTUAL_ENV="$(eval "echo ${RTX_TOOL_OPTS__VIRTUALENV:-}")"
   if [ "$VIRTUAL_ENV" = "" ]; then
     return
   fi
-  python -m venv "$VIRTUAL_ENV"
-  export VIRTUAL_ENV
-  export RTX_ADD_PATH="$PWD/$VIRTUAL_ENV/bin"
+  unset PYTHONHOME
+  RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
+  if [ ! -d "$RTX_ADD_PATH" ]; then
+		echo "rtx-python: setting up virtualenv at $RTX_ADD_PATH" >&2
+		"$python_bin" -m venv "$VIRTUAL_ENV"
+	fi
+  export VIRTUAL_ENV RTX_ADD_PATH
 }
 
 setup_virtualenv
