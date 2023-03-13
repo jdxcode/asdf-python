@@ -91,3 +91,13 @@ Automatically create and activate a pipenv virtualenv when entering a directory 
 [tools]
 python = { version='3.11', pipenv='Pipfile' }
 ```
+
+## [experimental] Poetry support
+
+Automatically create and activate a poetry virtualenv when entering a directory with the
+`poetry` option. This requires using `.rtx.toml`:
+
+```toml
+[tools]
+python = { version='3.11', poetry='pyproject.toml' }
+```
