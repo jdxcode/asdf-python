@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+set -x
+
+echoerr() {
+  echo "$@" >&2
+}
 
 setup_virtualenv() {
   local python_bin="$RTX_INSTALL_PATH/bin/python"
@@ -13,11 +18,35 @@ setup_virtualenv() {
 		VIRTUAL_ENV="${RTX_PROJECT_ROOT:-}/$VIRTUAL_ENV"
 	fi
   if [ ! -d "$VIRTUAL_ENV" ]; then
-		echo "rtx-python: setting up virtualenv at $VIRTUAL_ENV" >&2
+		echoerr "rtx-python: setting up virtualenv at $VIRTUAL_ENV"
 		"$python_bin" -m venv "$VIRTUAL_ENV"
 	fi
   RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
   export VIRTUAL_ENV RTX_ADD_PATH
 }
 
+setup_pipenv() {
+  local python_bin="$RTX_INSTALL_PATH/bin/python"
+  local pipfile="$(eval "echo ${RTX_TOOL_OPTS__PIPENV:-}")"
+  if [ "$pipfile" = "" ]; then
+    return
+  fi
+  if [[ "$pipfile" != /* ]] && [[ -n "${RTX_PROJECT_ROOT:-}" ]]; then
+		pipfile="${RTX_PROJECT_ROOT:-}/$pipfile"
+	fi
+  if [[ ! -f "$pipfile" ]]; then
+    echoerr "rtx-python: no Pipfile found at $pipfile"
+    exit 1
+  fi
+  VIRTUAL_ENV=$(pipenv --venv 2>/dev/null ; true)
+  if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+    pipenv install --dev
+    VIRTUAL_ENV=$(pipenv --venv)
+  fi
+  RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
+  PIPENV_ACTIVE=1
+  export VIRTUAL_ENV RTX_ADD_PATH PIPENV_ACTIVE
+}
+
 setup_virtualenv
+setup_pipenv
