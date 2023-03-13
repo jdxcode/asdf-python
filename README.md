@@ -79,5 +79,15 @@ not support this syntax:
 
 ```toml
 [tools]
-python = {version='3.11', virtualenv='.venv'}
+python = { version='3.11', virtualenv='.venv' }
+```
+
+## [experimental] Pipenv support
+
+Automatically create and activate a pipenv virtualenv when entering a directory with the
+`pipenv` option. This requires using `.rtx.toml`:
+
+```toml
+[tools]
+python = { version='3.11', pipenv='Pipfile' }
 ```
