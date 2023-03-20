@@ -52,7 +52,6 @@ setup_poetry() {
   local python_bin="$RTX_INSTALL_PATH/bin/python"
   local poetry_bin
   local poetryfile
-  poetry_bin="$(rtx x -- which poetry)"
   poetryfile="$(eval "echo ${RTX_TOOL_OPTS__POETRY:-}")"
   if [ "$poetryfile" = "" ]; then
     return
@@ -64,6 +63,7 @@ setup_poetry() {
     echoerr "rtx-python: no pyproject.toml found at $poetryfile"
     exit 1
   fi
+  poetry_bin="$(rtx x -- which poetry)"
   VIRTUAL_ENV=$("$poetry_bin" env info -p 2>/dev/null)
   if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
     "$poetry_bin" install
