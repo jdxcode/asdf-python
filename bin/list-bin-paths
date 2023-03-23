@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# shellcheck source=./utils.sh
+source "$RTX_PLUGIN_PATH/bin/utils.sh"
+
+VIRTUAL_ENV="$(get_venv)"
+if [ -z "$VIRTUAL_ENV" ]; then
+  echo "bin"
+else
+  echo "bin $VIRTUAL_ENV/bin"
+fi

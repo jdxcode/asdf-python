@@ -1,3 +1,4 @@
 /pyenv
 /pyenv_last_update
+/.venv
 .DS_Store
