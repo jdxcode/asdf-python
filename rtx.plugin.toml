@@ -1,9 +1,9 @@
-legacy-filenames = [".python-version"]
+#legacy-filenames = [".python-version"]
 
-[exec-env]
-cache-key = [
-  "{{project_root}}",
-  "{{opts.virtualenv}}",
-  "{{opts.pipenv}}",
-  "{{opts.poetry}}",
-]
+# [exec-env]
+# cache-key = [
+#   "{{project_root}}",
+#   "{{opts.virtualenv}}",
+#   "{{opts.pipenv}}",
+#   "{{opts.poetry}}",
+# ]
