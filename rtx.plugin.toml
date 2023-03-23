@@ -1,9 +1,29 @@
-#legacy-filenames = [".python-version"]
+#:schema https://rtx.pub/schema/rtx.plugin.json
 
-# [exec-env]
-# cache-key = [
-#   "{{project_root}}",
-#   "{{opts.virtualenv}}",
-#   "{{opts.pipenv}}",
-#   "{{opts.poetry}}",
-# ]
+[exec-env]
+cache-key = [
+  """
+  {% if project_root %}
+    {{ project_root | canonicalize }}
+  {% endif %}
+  """,
+  """
+  {% if opts.virtualenv %}
+    {{ opts.virtualenv }}
+  {% endif %}
+  """
+]
+
+[list-bin-paths]
+cache-key = [
+  """
+  {% if project_root %}
+    {{ project_root | canonicalize }}
+  {% endif %}
+  """,
+  """
+  {% if opts.virtualenv %}
+    {{ opts.virtualenv }}
+  {% endif %}
+  """
+]

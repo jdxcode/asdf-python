@@ -82,22 +82,6 @@ not support this syntax:
 python = { version='3.11', virtualenv='.venv' }
 ```
 
-## [experimental] Pipenv support
+## [experimental] Pipenv/Poetry support
 
-Automatically create and activate a pipenv virtualenv when entering a directory with the
-`pipenv` option. This requires using `.rtx.toml`:
-
-```toml
-[tools]
-python = { version='3.11', pipenv='Pipfile' }
-```
-
-## [experimental] Poetry support
-
-Automatically create and activate a poetry virtualenv when entering a directory with the
-`poetry` option. This requires using `.rtx.toml`:
-
-```toml
-[tools]
-python = { version='3.11', poetry='pyproject.toml' }
-```
+_This functionality has been removed from this plugin and instead put into [rtx-pipenv](https://github.com/rtx-plugins/rtx-pipenv) and [rtx-poetry](https://github.com/rtx-plugins/rtx-poetry)._

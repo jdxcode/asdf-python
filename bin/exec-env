@@ -1,79 +1,15 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
-
-echoerr() {
-  echo "$@" >&2
-}
+# shellcheck source=./utils.sh
+source "$RTX_PLUGIN_PATH/bin/utils.sh"
 
 setup_virtualenv() {
-  local python_bin="$RTX_INSTALL_PATH/bin/python"
-  VIRTUAL_ENV="$(eval "echo ${RTX_TOOL_OPTS__VIRTUALENV:-}")"
+  VIRTUAL_ENV="$(get_venv)"
   if [ "$VIRTUAL_ENV" = "" ]; then
     return
   fi
   unset PYTHONHOME
-  if [[ "$VIRTUAL_ENV" != /* ]] && [[ -n "${RTX_PROJECT_ROOT:-}" ]]; then
-    VIRTUAL_ENV="${RTX_PROJECT_ROOT:-}/$VIRTUAL_ENV"
-  fi
-  if [ ! -d "$VIRTUAL_ENV" ]; then
-    echoerr "rtx-python: setting up virtualenv at $VIRTUAL_ENV"
-    "$python_bin" -m venv "$VIRTUAL_ENV"
-  fi
-  RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
-  export VIRTUAL_ENV RTX_ADD_PATH
-}
-
-setup_pipenv() {
-  local python_bin="$RTX_INSTALL_PATH/bin/python"
-  local pipfile
-  pipfile="$(eval "echo ${RTX_TOOL_OPTS__PIPENV:-}")"
-  if [ "$pipfile" = "" ]; then
-    return
-  fi
-  if [[ "$pipfile" != /* ]] && [[ -n "${RTX_PROJECT_ROOT:-}" ]]; then
-    pipfile="${RTX_PROJECT_ROOT:-}/$pipfile"
-  fi
-  if [[ ! -f "$pipfile" ]]; then
-    echoerr "rtx-python: no Pipfile found at $pipfile"
-    exit 1
-  fi
-  VIRTUAL_ENV=$(pipenv --venv 2>/dev/null)
-  if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
-    pipenv install --dev
-    VIRTUAL_ENV=$(pipenv --venv)
-  fi
-  RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
-  PIPENV_ACTIVE=1
-  export VIRTUAL_ENV RTX_ADD_PATH PIPENV_ACTIVE
-}
-
-setup_poetry() {
-  local python_bin="$RTX_INSTALL_PATH/bin/python"
-  local poetry_bin
-  local poetryfile
-  poetryfile="$(eval "echo ${RTX_TOOL_OPTS__POETRY:-}")"
-  if [ "$poetryfile" = "" ]; then
-    return
-  fi
-  if [[ "$poetryfile" != /* ]] && [[ -n "${RTX_PROJECT_ROOT:-}" ]]; then
-    poetryfile="${RTX_PROJECT_ROOT:-}/$poetryfile"
-  fi
-  if [[ ! -f "$poetryfile" ]]; then
-    echoerr "rtx-python: no pyproject.toml found at $poetryfile"
-    exit 1
-  fi
-  poetry_bin="$(rtx x -- which poetry)"
-  VIRTUAL_ENV=$("$poetry_bin" env info -p 2>/dev/null)
-  if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
-    "$poetry_bin" install
-    VIRTUAL_ENV=$("$poetry_bin" env info -p)
-  fi
-  RTX_ADD_PATH="$(realpath "$VIRTUAL_ENV/bin")"
-  POETRY_ACTIVE=1
-  export VIRTUAL_ENV RTX_ADD_PATH POETRY_ACTIVE
+  export VIRTUAL_ENV
 }
 
 setup_virtualenv
-setup_pipenv
-setup_poetry

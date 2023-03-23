@@ -1,3 +1,13 @@
+#!/usr/bin/env bash
+
+echoerr() {
+  printf "\033[0;31m%s\033[0m" "$1" >&2
+}
+
+python_bin() {
+  echo "$RTX_INSTALL_PATH/bin/python"
+}
+
 echoerr() {
   printf "\033[0;31m%s\033[0m" "$1" >&2
 }
@@ -52,4 +62,19 @@ install_or_update_python_build() {
     update_python_build
     date +%s > "$(pyenv_update_timestamp_path)"
   fi
+}
+
+get_venv() {
+  venv="$(eval "echo ${RTX_TOOL_OPTS__VIRTUALENV:-}")"
+  if [ "$venv" = "" ]; then
+    return
+  fi
+  if [[ "$venv" != /* ]] && [[ -n "${RTX_PROJECT_ROOT:-}" ]]; then
+    venv="${RTX_PROJECT_ROOT:-}/$venv"
+  fi
+  if [ ! -d "$venv" ]; then
+    echoerr "rtx-python: setting up virtualenv at $venv"
+    "$(python_bin)" -m venv "$venv"
+  fi
+  "$(python_bin)" --venv 2>/dev/null
 }
