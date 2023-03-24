@@ -76,5 +76,5 @@ get_venv() {
     echoerr "rtx-python: setting up virtualenv at $venv"
     "$(python_bin)" -m venv "$venv"
   fi
-  "$(python_bin)" --venv 2>/dev/null
+  echo "$venv"
 }
