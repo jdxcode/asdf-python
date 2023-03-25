@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+if [ "${RTX_TRACE:-}" = 1 ]; then
+  set -x
+fi
 set -euo pipefail
 # shellcheck source=./utils.sh
 source "$RTX_PLUGIN_PATH/bin/utils.sh"
