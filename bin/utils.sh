@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
-echoerr() {
-  printf "\033[0;31m%s\033[0m" "$1" >&2
-}
-
 python_bin() {
   echo "$RTX_INSTALL_PATH/bin/python"
 }
 
 echoerr() {
-  printf "\033[0;31m%s\033[0m" "$1" >&2
+  echo "$1" >&2
 }
 
 ensure_python_build_installed() {
