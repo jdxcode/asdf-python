@@ -5,7 +5,7 @@ python_bin() {
 }
 
 echoerr() {
-  echo "$1" >&2
+  echo "$*" >&2
 }
 
 ensure_python_build_installed() {
@@ -68,9 +68,9 @@ get_venv() {
   if [[ "$venv" != /* ]] && [[ -n "${RTX_PROJECT_ROOT:-}" ]]; then
     venv="${RTX_PROJECT_ROOT:-}/$venv"
   fi
-  if [ ! -d "$venv" ]; then
+  if [[ ! -d "$venv" ]] || [[ "Python ${RTX_INSTALL_VERSION}" != "$("$venv"/bin/python -V)" ]]; then
     echoerr "rtx-python: setting up virtualenv at $venv"
-    "$(python_bin)" -m venv "$venv"
+    "$(python_bin)" -m venv --clear "$venv"
   fi
   echo "$venv"
 }
