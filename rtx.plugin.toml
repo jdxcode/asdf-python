@@ -2,30 +2,16 @@
 
 [exec-env]
 cache-key = [
-  """
-  {% if project_root %}
-    {{ project_root | canonicalize }}
-  {% endif %}
-  """,
-  """
-  {% if opts.virtualenv %}
-    {{ opts.virtualenv }}
-  {% endif %}
-  """
+  "{% if project_root %}{{ project_root | canonicalize }}{% endif %}",
+  "{% if project_root %}{% set config_path = project_root ~ '/.rtx.toml' %}{% if config_path is file_exists %}{{ config_path | last_modified }}{% endif %}{% endif %}",
+  "{% if opts.virtualenv %}{{ opts.virtualenv }}{% endif %}",
 ]
 
 [list-bin-paths]
 cache-key = [
-  """
-  {% if project_root %}
-    {{ project_root | canonicalize }}
-  {% endif %}
-  """,
-  """
-  {% if opts.virtualenv %}
-    {{ opts.virtualenv }}
-  {% endif %}
-  """
+  "{% if project_root %}{{ project_root | canonicalize }}{% endif %}",
+  "{% if project_root %}{% set config_path = project_root ~ '/.rtx.toml' %}{% if config_path is file_exists %}{{ config_path | last_modified }}{% endif %}{% endif %}",
+  "{% if opts.virtualenv %}{{ opts.virtualenv }}{% endif %}",
 ]
 
 [list-legacy-filenames]
