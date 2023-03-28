@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-if [ "${RTX_TRACE:-}" = 1 ]; then
-  set -x
-fi
-echo ".python-version"
