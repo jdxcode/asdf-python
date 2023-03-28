@@ -27,3 +27,8 @@ cache-key = [
   {% endif %}
   """
 ]
+
+[list-legacy-filenames]
+data = """
+.python-version
+"""
