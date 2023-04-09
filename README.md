@@ -1,5 +1,9 @@
 # rtx-python
 
+> **Warning**
+>
+> This plugin is soon to be deprecated in favor of rtx's built-in [core python functionality](https://github.com/jdxcode/rtx/blob/main/docs/python.md).
+
 [![Build Status](https://travis-ci.org/danhper/rtx-python.svg?branch=master)](https://travis-ci.org/danhper/rtx-python)
 
 Python plugin for [rtx](https://github.com/jdxcode/rtx) version manager
