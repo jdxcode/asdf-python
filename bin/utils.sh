@@ -16,7 +16,7 @@ ensure_python_build_installed() {
 
 download_python_build() {
   echo "Downloading python-build..." >&2
-  local pyenv_url="https://github.com/pyenv/pyenv.git"
+  local pyenv_url="${RTX_PYENV_REPOSITORY:-https://github.com/pyenv/pyenv.git}"
   git clone $pyenv_url "$(pyenv_path)"
 }
 
